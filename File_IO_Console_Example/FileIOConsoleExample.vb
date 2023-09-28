@@ -12,11 +12,12 @@ Module FileIOConsoleExample
 
     Sub Main()
         'Write file once
-        WriteToFile()
-        For i = 0 To 10
-            'append 10 times
-            AppendToFile()
-        Next
+        'WriteToFile()
+        'For i = 0 To 10
+        '    'append 10 times
+        '    AppendToFile()
+        'Next
+        AppendRecordsToFile()
         Console.Read()
 
     End Sub
@@ -34,4 +35,15 @@ Module FileIOConsoleExample
         PrintLine(1, "Follow the white rabbit....")
         FileClose(1)
     End Sub
+
+    Sub AppendRecordsToFile()
+        FileOpen(1, "Data.log", OpenMode.Append)
+        Write(1, "This is a string")
+        Write(1, 1234)
+        Write(1, True)
+        Write(1, DateTime.Now)
+        FileClose(1)
+    End Sub
+
+    'read all the records in data.log and write to console
 End Module
