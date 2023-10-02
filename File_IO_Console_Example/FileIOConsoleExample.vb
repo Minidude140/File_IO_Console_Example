@@ -17,7 +17,8 @@ Module FileIOConsoleExample
         '    'append 10 times
         '    AppendToFile()
         'Next
-        AppendRecordsToFile()
+        'AppendRecordsToFile()
+        ImportCustomerData()
         Console.Read()
 
     End Sub
@@ -46,4 +47,26 @@ Module FileIOConsoleExample
     End Sub
 
     'read all the records in data.log and write to console
+    Sub ReadRecordsFromFile()
+
+    End Sub
+    'read all the records of email.txt
+    Sub ImportCustomerData()
+        Dim fileName As String = "../../email.txt"
+        Dim fileNumber As Integer = FreeFile()
+        Dim currentRecord As String = ""
+        Dim recordCount As Integer = 0
+
+        FileOpen(fileNumber, fileName, OpenMode.Input)
+        Do Until EOF(fileNumber)
+            'Input(fileNumber, currentRecord)
+            currentRecord = LineInput(fileNumber)
+            Console.WriteLine(currentRecord)
+            recordCount += 1
+
+        Loop
+
+        FileClose(fileNumber)
+        Console.WriteLine($"There are {recordCount} records in {fileName} file.")
+    End Sub
 End Module
