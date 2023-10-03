@@ -56,11 +56,21 @@ Module FileIOConsoleExample
         Dim fileNumber As Integer = FreeFile()
         Dim currentRecord As String = ""
         Dim recordCount As Integer = 0
+        Dim customerData() As String
+        Dim cleanFileName As String = "../../" & DateTime.Now.ToString("yyyyMMddhhss") & ".txt"
 
         FileOpen(fileNumber, fileName, OpenMode.Input)
         Do Until EOF(fileNumber)
-            'Input(fileNumber, currentRecord)
+            'Input(fileNumber, currentRecord) **used to retrieve each record instead of line**
+            'sets currentRecord to the next line of data in email.txt
             currentRecord = LineInput(fileNumber)
+            'assigns current record to current record with all " removed
+            currentRecord = Replace(currentRecord, Chr(34), "", 1, -1)
+            'assigns current record to current record with all $ removed
+            currentRecord = Replace(currentRecord, "$", "", 1, -1)
+            customerData = Split(currentRecord, ",")
+            'TODO test array length before appending to see if data is valid
+            ExportCustomerData(customerData, cleanFileName)
             Console.WriteLine(currentRecord)
             recordCount += 1
 
@@ -68,5 +78,14 @@ Module FileIOConsoleExample
 
         FileClose(fileNumber)
         Console.WriteLine($"There are {recordCount} records in {fileName} file.")
+    End Sub
+
+    Sub ExportCustomerData(recordData() As String, fileName As String)
+        Dim fileNumber As Integer = FreeFile()
+        FileOpen(fileNumber, fileName, OpenMode.Append)
+        For i = LBound(recordData) To UBound(recordData)
+            Write(fileNumber, recordData(i))
+        Next
+        FileClose(fileNumber)
     End Sub
 End Module
